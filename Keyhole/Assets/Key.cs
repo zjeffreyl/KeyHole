@@ -13,6 +13,8 @@ public class Key : MonoBehaviour {
     private bool trigger = false;
     public float orbit_speed;
     public float slide_speed;
+    public float halt_speed = 0;
+    public float temp_speed;
     private Vector3 v_rotation;
     public Hole hole;
     public float distance;
@@ -22,20 +24,24 @@ public class Key : MonoBehaviour {
         this.transform.position += new Vector3(0,distance,10);
 	}
     
-    public bool checkWin()
+    public void checkWin()
     {
         float angleDiff = (Mathf.Abs(this.transform.rotation.z) - Mathf.Abs(hole.transform.rotation.z));
         if (Mathf.Abs(angleDiff) < threshold)
         {
             Instantiate(victoryParticle, particleLocation.transform.position, particleLocation.transform.rotation);
-            
-            return true;
+            //GameObject.Destroy(victoryParticle, 1f);
         }
         else
         {
             Debug.Log("Failed");
-            return false;
+
         }
+    }
+    
+    public void increaseDifficulty()
+    {
+
     }
 	
 	// Update is called once per frame
@@ -44,10 +50,12 @@ public class Key : MonoBehaviour {
         //Check the angle here if so Instantiate
         if (Input.GetKey(KeyCode.B) || trigger)
         {
-            orbit_speed = 0f;
+            orbit_speed = temp_speed;
+            orbit_speed = halt_speed;
             trigger = true;
             Debug.Log("Receiving the input");
             float move = slide_speed * Time.deltaTime;
+            trigger = false;
             transform.position = Vector3.MoveTowards(transform.position, hole.transform.position, move);
             //check here
             checkOnce = true;
@@ -59,7 +67,8 @@ public class Key : MonoBehaviour {
             //no more trigger and running move
             trigger = false;
             Debug.Log("Key is at the target");
-            hole.rotation_speed = 0f;
+            hole.rotation_speed = temp_speed;
+            hole.rotation_speed = halt_speed;
             checkWin();
         }
     }

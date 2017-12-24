@@ -292,6 +292,7 @@
     <Compile Include="Assets\Key.cs" />
     <Compile Include="Assets\MenuButtons.cs" />
     <Compile Include="Assets\Scene_Manager.cs" />
+    <Compile Include="Assets\ScoreKeeper.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\Benchmark01.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\Benchmark01_UGUI.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\Benchmark02.cs" />
