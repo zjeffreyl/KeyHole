@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Key : MonoBehaviour
 {
-    public enum LevelState { PLAYING, RESULT, RESPAWN };
+    public enum LevelState { PLAYING, PROCESSING, RESPAWN, GAMEOVER };
     //State
     public LevelState state = LevelState.PLAYING;
     //Victory particle
@@ -14,11 +14,11 @@ public class Key : MonoBehaviour
     public float threshold = 0.05f;
 
     private bool pressBAllowed = true;
-    private bool trigger = false;
-    public float orbit_speed;
+    [HideInInspector]
+    public float current_orbit_speed;
+    public float default_orbit_speed = 23.05f;
     public float slide_speed;
     public float halt_speed = 0;
-    public float temp_speed;
     private Vector3 v_rotation;
     public Hole hole;
     public float distance;
@@ -27,65 +27,73 @@ public class Key : MonoBehaviour
     void Start()
     {
         this.transform.position += new Vector3(0, distance, 10);
+        if (current_orbit_speed == 0f)
+        {
+            current_orbit_speed = default_orbit_speed;
+        }
     }
 
-    public void checkWin()
+    public void CheckWin()
     {
         float angleDiff = (Mathf.Abs(this.transform.rotation.z) - Mathf.Abs(hole.transform.rotation.z));
         if (Mathf.Abs(angleDiff) < threshold)
         {
             GameObject clone = (GameObject)Instantiate(victoryParticle, particleLocation.transform.position, particleLocation.transform.rotation);
             Destroy(clone.gameObject, 1f);
-            
+            //award point here
+            state = LevelState.RESPAWN;
+
         }
         else
         {
-            Debug.Log("Failed");
-
+            state = LevelState.GAMEOVER;
         }
     }
 
-    public void increaseDifficulty()
+    public void Reposition()
     {
-
+        
     }
 
     // Update is called once per frame
     void Update()
     {
-        if(state == LevelState.PLAYING)
+        transform.RotateAround(Vector3.zero, zAxis, current_orbit_speed * Time.deltaTime);
+
+        if (state == LevelState.PLAYING)
         {
             pressBAllowed = true;
-        }
-        transform.RotateAround(Vector3.zero, zAxis, orbit_speed * Time.deltaTime);
-        //Check the angle here if so Instantiate
-        if (Input.GetKey(KeyCode.B) && pressBAllowed == true)
-        {
-            //pressed once and the result will continue
-            state = LevelState.RESULT;
-            //While in 'PRESSED B' @ anytime cannot access again
-            if(state == LevelState.RESULT)
+            if (Input.GetKey(KeyCode.B) && pressBAllowed == true)
             {
-                //lock input
+                //While in 'PRESSED B' @ anytime cannot access again
+                current_orbit_speed = 0;
+                hole.rotation_speed = 0;
                 pressBAllowed = false;
-                //now check result
-            }
-            orbit_speed = 0;
-            trigger = true;
-            while (trigger == true)
-            {
-                Debug.Log("Receiving the input in loop");
-                float move = slide_speed * Time.deltaTime;
-                transform.position = Vector3.MoveTowards(transform.position, hole.transform.position, move);
-                //at target position needs to stop here and exit loop
-                if (this.transform.position == hole.transform.position)
-                {
-                    Debug.Log("Key is at the target");
-                    checkWin();
-                    //exit loop
-                    trigger = false;
-                }
+                state = LevelState.PROCESSING;
             }
         }
+
+        if(state == LevelState.PROCESSING)
+        {
+            float move = slide_speed * Time.deltaTime;
+            transform.position = Vector3.MoveTowards(this.transform.position, hole.transform.position, move);
+            //When it is at the position
+            if (this.transform.position == hole.transform.position)
+            {
+                CheckWin();
+            }
+        }
+
+        if(state == LevelState.RESPAWN)
+        {
+
+        }
+
+        if (state == LevelState.GAMEOVER)
+        {
+            Debug.Log("FAILED");
+        }
+
+
     }
 }

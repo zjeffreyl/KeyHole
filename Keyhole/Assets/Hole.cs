@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class Hole : MonoBehaviour {
     public float rotation_speed;
+    public float default_rotation_speed = 1.86f;
     private Vector3 v_rotation;
 	// Use this for initialization
 	void Start () {
