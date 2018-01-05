@@ -19,8 +19,8 @@ public class Key : MonoBehaviour
     public float default_orbit_speed = 23.05f;
     public float max_orbit_speed = 30f;
     public float min_orbit_speed = 20f;
-    public float max_distance = 8f;
-    public float min_distance = 6f;
+    public float max_distance = 6f;
+    public float min_distance = 3.5f;
     public float slide_speed;
     public float halt_speed = 0;
     private Vector3 v_rotation;
@@ -60,9 +60,12 @@ public class Key : MonoBehaviour
     {
         current_orbit_speed = Random.Range(min_orbit_speed, max_orbit_speed);
         distance = Random.Range(min_distance, max_distance);
-        if(distance > max_distance) { Debug.LogError(distance); }
+        hole.Reposition();
         this.transform.position = new Vector3(0, distance , 10);
-
+        this.transform.SetPositionAndRotation(new Vector3(0, distance, 10), new Quaternion(0, 0, 0, 0));
+        float reverse = Random.Range(0, 500);
+        if (reverse > 249) current_orbit_speed *= -1;
+        Debug.Log("Distance: " + distance + " Speed: " + current_orbit_speed);
         state = LevelState.PLAYING;
     } 
 
