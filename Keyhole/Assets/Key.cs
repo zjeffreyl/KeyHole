@@ -17,6 +17,10 @@ public class Key : MonoBehaviour
     [HideInInspector]
     public float current_orbit_speed;
     public float default_orbit_speed = 23.05f;
+    public float max_orbit_speed = 30f;
+    public float min_orbit_speed = 20f;
+    public float max_distance = 8f;
+    public float min_distance = 6f;
     public float slide_speed;
     public float halt_speed = 0;
     private Vector3 v_rotation;
@@ -25,7 +29,9 @@ public class Key : MonoBehaviour
     // Use this for initialization
     private Vector3 zAxis = new Vector3(0, 0, 1);
     void Start()
-    {
+    { 
+        
+
         this.transform.position += new Vector3(0, distance, 10);
         if (current_orbit_speed == 0f)
         {
@@ -42,18 +48,23 @@ public class Key : MonoBehaviour
             Destroy(clone.gameObject, 1f);
             //award point here
             state = LevelState.RESPAWN;
-
+           
         }
         else
         {
             state = LevelState.GAMEOVER;
         }
     }
-
+    // Changes the Orbit Speed, Distance of the Key
     public void Reposition()
     {
-        
-    }
+        current_orbit_speed = Random.Range(min_orbit_speed, max_orbit_speed);
+        distance = Random.Range(min_distance, max_distance);
+        if(distance > max_distance) { Debug.LogError(distance); }
+        this.transform.position = new Vector3(0, distance , 10);
+
+        state = LevelState.PLAYING;
+    } 
 
     // Update is called once per frame
     void Update()
@@ -86,7 +97,7 @@ public class Key : MonoBehaviour
 
         if(state == LevelState.RESPAWN)
         {
-
+            Reposition();
         }
 
         if (state == LevelState.GAMEOVER)
