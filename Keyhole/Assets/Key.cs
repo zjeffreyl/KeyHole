@@ -12,7 +12,6 @@ public class Key : MonoBehaviour
     public Transform particleLocation;
 
     public float threshold = 0.05f;
-
     private bool pressBAllowed = true;
     [HideInInspector]
     public float current_orbit_speed;
@@ -22,6 +21,7 @@ public class Key : MonoBehaviour
     public float max_distance = 6f;
     public float min_distance = 3.5f;
     public float slide_speed;
+
     public float halt_speed = 0;
     private Vector3 v_rotation;
     public Hole hole;
@@ -30,11 +30,15 @@ public class Key : MonoBehaviour
     //sprites
     public Sprite bigKey;
     public Sprite smalKey;
+    private SpriteRenderer rend;
     // Use this for initialization
     private Vector3 zAxis = new Vector3(0, 0, 1);
     void Start()
-    { 
-        
+    {
+
+        rend = GetComponent<SpriteRenderer>();
+        var ps = victoryParticle.GetComponent<ParticleSystem>().colorOverLifetime;
+        ps.color = new ParticleSystem.MinMaxGradient(Color.white);
 
         this.transform.position += new Vector3(0, distance, 10);
         if (current_orbit_speed == 0f)
@@ -49,7 +53,7 @@ public class Key : MonoBehaviour
         if (Mathf.Abs(angleDiff) < threshold)
         {
             //change to bigKey
-            this.GetComponent<SpriteRenderer>().sprite = bigKey;
+            rend.sprite = bigKey;
             GameObject clone = (GameObject)Instantiate(victoryParticle, particleLocation.transform.position, particleLocation.transform.rotation);
             Destroy(clone.gameObject, 1f);
             //award point here
@@ -62,18 +66,23 @@ public class Key : MonoBehaviour
             state = LevelState.GAMEOVER;
         }
     }
-    // Changes the Orbit Speed, Distance of the Key
+    // Changes the Orbit Speed, Distance, Color of the Key
     public void Reposition()
     {
         current_orbit_speed = Random.Range(min_orbit_speed, max_orbit_speed);
         distance = Random.Range(min_distance, max_distance);
-        hole.Reposition();
         this.transform.position = new Vector3(0, distance , 10);
         this.transform.SetPositionAndRotation(new Vector3(0, distance, 10), new Quaternion(0, 0, 0, 0));
         float reverse = Random.Range(0, 500);
         if (reverse > 249) current_orbit_speed *= -1;
-        Debug.Log("Distance: " + distance + " Speed: " + current_orbit_speed);
+        rend.color = new Color(Random.Range(.0f, 1f), Random.Range(.0f, 1f), Random.Range(.0f, 1f));
+        var ps = victoryParticle.GetComponent<ParticleSystem>().colorOverLifetime;
+        ps.color = new ParticleSystem.MinMaxGradient(rend.color);
+   
+        hole.Reposition();
+        Debug.Log("Distance: " + distance + " Speed: " + current_orbit_speed + " Color: " + rend.color);
         state = LevelState.PLAYING;
+
     } 
 
     // Update is called once per frame
@@ -107,7 +116,7 @@ public class Key : MonoBehaviour
 
         if(state == LevelState.RESPAWN)
         {
-            this.GetComponent<SpriteRenderer>().sprite = smalKey;
+            rend.sprite = smalKey;
             Reposition();
         }
 
