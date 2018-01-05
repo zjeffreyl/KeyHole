@@ -26,6 +26,10 @@ public class Key : MonoBehaviour
     private Vector3 v_rotation;
     public Hole hole;
     public float distance;
+
+    //sprites
+    public Sprite bigKey;
+    public Sprite smalKey;
     // Use this for initialization
     private Vector3 zAxis = new Vector3(0, 0, 1);
     void Start()
@@ -44,6 +48,8 @@ public class Key : MonoBehaviour
         float angleDiff = (Mathf.Abs(this.transform.rotation.z) - Mathf.Abs(hole.transform.rotation.z));
         if (Mathf.Abs(angleDiff) < threshold)
         {
+            //change to bigKey
+            this.GetComponent<SpriteRenderer>().sprite = bigKey;
             GameObject clone = (GameObject)Instantiate(victoryParticle, particleLocation.transform.position, particleLocation.transform.rotation);
             Destroy(clone.gameObject, 1f);
             //award point here
@@ -52,6 +58,7 @@ public class Key : MonoBehaviour
         }
         else
         {
+            //stay small key and lose
             state = LevelState.GAMEOVER;
         }
     }
