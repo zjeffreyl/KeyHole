@@ -8,9 +8,10 @@ public class Hole : MonoBehaviour {
     public float min_rotation_speed = 1.0f;
     public float default_rotation_speed = 1.86f;
     private Vector3 v_rotation;
+    private SpriteRenderer rend;
 	// Use this for initialization
 	void Start () {
-      
+        rend = GetComponent<SpriteRenderer>();
 	}
 
     // Update is called once per frame
@@ -20,6 +21,7 @@ public class Hole : MonoBehaviour {
     }
     public void Reposition()
     {
+
         rotation_speed = Random.Range(min_rotation_speed, max_rotation_speed);
         float reverse = Random.Range(0, 500);
         if (reverse > 249) rotation_speed *= -1; 
