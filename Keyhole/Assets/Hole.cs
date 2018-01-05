@@ -25,7 +25,7 @@ public class Hole : MonoBehaviour {
         rotation_speed = Random.Range(min_rotation_speed, max_rotation_speed);
         float reverse = Random.Range(0, 500);
         if (reverse > 249) rotation_speed *= -1; 
-        Debug.Log("Hole Speed: " + rotation_speed);
+        //Debug.Log("Hole Speed: " + rotation_speed);
     }
     void FixedUpdate()
     {

@@ -30,9 +30,12 @@ public class Key : MonoBehaviour
     //sprites
     public Sprite bigKey;
     public Sprite smalKey;
-    private SpriteRenderer rend;
+    public SpriteRenderer rend;
     // Use this for initialization
     private Vector3 zAxis = new Vector3(0, 0, 1);
+
+    public ScoreKeeper pointsIndicator;
+    public int pointsAwarded = 1;
     void Start()
     {
 
@@ -58,7 +61,8 @@ public class Key : MonoBehaviour
             Destroy(clone.gameObject, 1f);
             //award point here
             state = LevelState.RESPAWN;
-           
+            pointsIndicator.ScoreCounter(pointsAwarded);
+
         }
         else
         {
@@ -70,6 +74,10 @@ public class Key : MonoBehaviour
     public void Reposition()
     {
         current_orbit_speed = Random.Range(min_orbit_speed, max_orbit_speed);
+        while(current_orbit_speed - hole.rotation_speed < 3f)
+        {
+            current_orbit_speed = Random.Range(min_orbit_speed, max_orbit_speed);
+        }
         distance = Random.Range(min_distance, max_distance);
         this.transform.position = new Vector3(0, distance , 10);
         this.transform.SetPositionAndRotation(new Vector3(0, distance, 10), new Quaternion(0, 0, 0, 0));
@@ -80,7 +88,7 @@ public class Key : MonoBehaviour
         ps.color = new ParticleSystem.MinMaxGradient(rend.color);
    
         hole.Reposition();
-        Debug.Log("Distance: " + distance + " Speed: " + current_orbit_speed + " Color: " + rend.color);
+        //Debug.Log("Distance: " + distance + " Speed: " + current_orbit_speed + " Color: " + rend.color);
         state = LevelState.PLAYING;
 
     } 
