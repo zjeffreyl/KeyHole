@@ -107,6 +107,7 @@ public class Key : MonoBehaviour
 
         if(state == LevelState.RESPAWN)
         {
+            this.GetComponent<SpriteRenderer>().sprite = smalKey;
             Reposition();
         }
 
