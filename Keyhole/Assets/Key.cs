@@ -21,16 +21,15 @@ public class Key : MonoBehaviour
     public float max_distance = 6f;
     public float min_distance = 3.5f;
     public float slide_speed;
-
+    public SpriteRenderer rend;
     public float halt_speed = 0;
     private Vector3 v_rotation;
     public Hole hole;
     public float distance;
-
     //sprites
     public Sprite bigKey;
-    public Sprite smalKey;
-    public SpriteRenderer rend;
+    public Sprite smallKey;
+
     // Use this for initialization
     private Vector3 zAxis = new Vector3(0, 0, 1);
 
@@ -86,7 +85,7 @@ public class Key : MonoBehaviour
         rend.color = new Color(Random.Range(.0f, 1f), Random.Range(.0f, 1f), Random.Range(.0f, 1f));
         var ps = victoryParticle.GetComponent<ParticleSystem>().colorOverLifetime;
         ps.color = new ParticleSystem.MinMaxGradient(rend.color);
-   
+        transform.RotateAround(Vector3.zero, zAxis, Random.Range(0,360));
         hole.Reposition();
         //Debug.Log("Distance: " + distance + " Speed: " + current_orbit_speed + " Color: " + rend.color);
         state = LevelState.PLAYING;
@@ -124,7 +123,7 @@ public class Key : MonoBehaviour
 
         if(state == LevelState.RESPAWN)
         {
-            rend.sprite = smalKey;
+            rend.sprite = smallKey;
             Reposition();
         }
 
