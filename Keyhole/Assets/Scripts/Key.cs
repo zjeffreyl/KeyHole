@@ -33,7 +33,7 @@ public class Key : MonoBehaviour
     // Use this for initialization
     private Vector3 zAxis = new Vector3(0, 0, 1);
 
-    public ScoreKeeper pointsIndicator;
+    public ScoreKeeper scoreKeeper;
     public int pointsAwarded = 1;
     void Start()
     {
@@ -60,7 +60,7 @@ public class Key : MonoBehaviour
             Destroy(clone.gameObject, 1f);
             //award point here
             state = LevelState.RESPAWN;
-            pointsIndicator.ScoreCounter(pointsAwarded);
+            scoreKeeper.ScoreCounter(pointsAwarded);
 
         }
         else
@@ -129,7 +129,7 @@ public class Key : MonoBehaviour
 
         if (state == LevelState.GAMEOVER)
         {
-            Debug.Log("FAILED");
+            //Reset when you lose
         }
 
 
