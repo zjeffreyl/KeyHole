@@ -100,7 +100,20 @@ public class Key : MonoBehaviour
         if (state == LevelState.PLAYING)
         {
             pressBAllowed = true;
-            if (Input.GetKey(KeyCode.B) && pressBAllowed == true)
+
+            bool pressed = false;
+            for(int i = 0; i < Input.touchCount; i++)
+            {
+                if(Input.touches[i].phase == TouchPhase.Began)
+                {
+                    pressed = true; 
+                }
+            }
+            if(Input.GetKeyDown(KeyCode.B))
+            {
+                pressed = true;
+            }
+            if ( pressed && pressBAllowed == true)
             {
                 //While in 'PRESSED B' @ anytime cannot access again
                 current_orbit_speed = 0;
