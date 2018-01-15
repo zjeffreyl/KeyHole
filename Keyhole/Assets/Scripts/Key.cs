@@ -35,6 +35,7 @@ public class Key : MonoBehaviour
 
     public ScoreKeeper scoreKeeper;
     public int pointsAwarded = 1;
+
     void Start()
     {
 

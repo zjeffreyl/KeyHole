@@ -29,7 +29,6 @@ public class GameOverZoom : MonoBehaviour {
         }
         if (isZoomed == false)
         {
-            Debug.Log("Zoom back to normal");
             cam.orthographicSize = Mathf.Lerp(cam.orthographicSize, normal, Time.deltaTime * smoothRetry);
         }
 
@@ -43,7 +42,7 @@ public class GameOverZoom : MonoBehaviour {
 
         if (Input.GetKeyUp(KeyCode.B) && retry == true)
         {
-            scoreKeeper.RestPoints();
+            scoreKeeper.Reset();
             retry = false;
             isZoomed = false;
             cam.backgroundColor = Color.Lerp(cam.backgroundColor, defaultColor, 3f);
