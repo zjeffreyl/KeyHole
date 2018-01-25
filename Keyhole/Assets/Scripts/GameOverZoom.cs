@@ -39,8 +39,19 @@ public class GameOverZoom : MonoBehaviour {
             retry = true;
             cam.backgroundColor = Color.Lerp(cam.backgroundColor, Color.red, 3f);
         }
-
-        if (Input.GetKeyUp(KeyCode.B) && retry == true)
+        bool pressed = false;
+        for (int i = 0; i < Input.touchCount; i++)
+        {
+            if (Input.touches[i].phase == TouchPhase.Began)
+            {
+                pressed = true;
+            }
+        }
+        if(Input.GetKeyUp(KeyCode.B))
+        {
+            pressed = true;
+        }
+        if (pressed && retry == true)
         {
             scoreKeeper.Reset();
             retry = false;
