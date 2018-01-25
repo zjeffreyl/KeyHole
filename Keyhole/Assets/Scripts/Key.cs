@@ -103,6 +103,7 @@ public class Key : MonoBehaviour
             pressBAllowed = true;
 
             bool pressed = false;
+<<<<<<< HEAD:Keyhole/Assets/Scripts/Key.cs
             for (int i = 0; i < Input.touchCount; i++)
             {
                 if (Input.touches[i].phase == TouchPhase.Began)
@@ -115,6 +116,20 @@ public class Key : MonoBehaviour
                 pressed = true;
             }
             if (pressed && pressBAllowed == true)
+=======
+            for(int i = 0; i < Input.touchCount; i++)
+            {
+                if(Input.touches[i].phase == TouchPhase.Began)
+                {
+                    pressed = true; 
+                }
+            }
+            if(Input.GetKeyDown(KeyCode.B))
+            {
+                pressed = true;
+            }
+            if ( pressed && pressBAllowed == true)
+>>>>>>> c778d954bff2b5c3cac5347ef3fc3c5b6f43e0ed:Keyhole/Assets/Key.cs
             {
                 //While in 'PRESSED B' @ anytime cannot access again
                 current_orbit_speed = 0;
